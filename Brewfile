@@ -77,6 +77,10 @@ brew "pnpm"           # Fast package manager
 tap "withgraphite/tap"
 brew "withgraphite/tap/graphite"  # gt - stacked PRs
 
+# Linear
+tap "schpet/tap"
+brew "schpet/tap/linear"          # Linear CLI
+
 # Productivity
 brew "tmux"       # Terminal multiplexer
 brew "trash"      # Safe delete CLI

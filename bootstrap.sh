@@ -203,7 +203,6 @@ create_symlink "$DOTFILES_DIR/git/.gitignore_global" "$HOME/.gitignore_global"
 mkdir -p "$HOME/.claude"
 create_symlink "$DOTFILES_DIR/AGENTS.md" "$HOME/.claude/CLAUDE.md"
 create_symlink "$DOTFILES_DIR/ai/commands" "$HOME/.claude/commands"
-create_symlink "$DOTFILES_DIR/ai/skills" "$HOME/.claude/skills"
 if [ -f "$DOTFILES_DIR/ai/claude-settings.json" ]; then
   create_symlink "$DOTFILES_DIR/ai/claude-settings.json" "$HOME/.claude/settings.json"
 fi
@@ -215,7 +214,6 @@ fi
 mkdir -p "$HOME/.codex"
 create_symlink "$DOTFILES_DIR/AGENTS.md" "$HOME/.codex/AGENTS.md"
 create_symlink "$DOTFILES_DIR/ai/commands" "$HOME/.codex/prompts"
-create_symlink "$DOTFILES_DIR/ai/skills" "$HOME/.codex/skills"
 if [ -f "$DOTFILES_DIR/ai/codex-config.toml" ]; then
   create_symlink "$DOTFILES_DIR/ai/codex-config.toml" "$HOME/.codex/config.toml"
 fi
@@ -236,14 +234,12 @@ mkdir -p "$HOME/.config/agents"
 if [ -f "$DOTFILES_DIR/ai/amp-settings.json" ]; then
   create_symlink "$DOTFILES_DIR/ai/amp-settings.json" "$HOME/.config/amp/settings.json"
 fi
-create_symlink "$DOTFILES_DIR/ai/skills" "$HOME/.config/agents/skills"
 create_symlink "$DOTFILES_DIR/ai/commands" "$HOME/.config/agents/commands"
 create_symlink "$DOTFILES_DIR/AGENTS.md" "$HOME/.config/agents/AGENTS.md"
 
 # Antigravity (Google)
 mkdir -p "$HOME/.gemini/antigravity"
 create_symlink "$DOTFILES_DIR/AGENTS.md" "$HOME/.gemini/GEMINI.md"
-create_symlink "$DOTFILES_DIR/ai/skills" "$HOME/.gemini/antigravity/global_skills"
 if [ -f "$DOTFILES_DIR/ai/antigravity-mcp.json" ]; then
   create_symlink "$DOTFILES_DIR/ai/antigravity-mcp.json" "$HOME/.gemini/antigravity/mcp_config.json"
 fi
@@ -253,6 +249,20 @@ mkdir -p "$HOME/.local/bin"
 for script in committer nanobanana; do
   create_symlink "$DOTFILES_DIR/ai/scripts/$script" "$HOME/.local/bin/$script"
 done
+
+# ===== Install Agent Skills (global so all agents share them) =====
+echo "Installing agent skills..."
+npx skills add schpet/linear-cli --global -y
+npx skills add anthropics/skills --skill pdf --skill docx --skill mcp-builder --skill pptx --skill skill-creator --skill xlsx --skill frontend-design --global -y
+npx skills add SawyerHood/dev-browser --global -y
+npx skills add snarktank/amp-skills --skill agent-browser --skill compound-engineering --global -y
+npx skills add snarktank/ralph --skill prd --skill ralph --global -y
+npx skills add vercel-labs/vercel-composition-patterns --skill vercel-react-best-practices --skill vercel-react-native-skills --skill web-design-guidelines --global -y
+npx skills add steipete/agent-scripts --skill create-cli --skill brave-search --skill markdown-converter --skill openai-image-gen --skill video-transcript-downloader --global -y
+npx skills add chrisrodz/dotfiles --skill polishing-issues --global -y
+npx skills add hashicorp/agent-skills --skill terraform-style-guide --global -y
+npx skills add antonbabenko/terraform-skill --skill terraform-skill --global -y
+print_success "Agent skills installed globally"
 
 # ===== Environment Setup =====
 if [ ! -f "$HOME/.env.local" ]; then

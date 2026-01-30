@@ -4,6 +4,10 @@
 
 ## 2026-01-30
 
+- Migrated agent skills to global installation via `npx skills add --global`. Skills are now installed from public registries (anthropics/skills, steipete/agent-scripts, snarktank/amp-skills, snarktank/ralph, vercel-labs/vercel-composition-patterns, hashicorp/agent-skills, antonbabenko/terraform-skill, chrisrodz/dotfiles) instead of being bundled in the repo.
+- Removed `ai/skills/` directory and related symlinks. Skills are now managed by the Skills CLI.
+- Added terraform skills: terraform-style-guide (hashicorp), terraform-skill (antonbabenko).
+
 - Added Antigravity (Google) setup with skills, rules (GEMINI.md), and MCP config.
 - Unified AI tool configuration: consistent skills, commands, MCP servers, and AGENTS.md across Amp, Claude, Codex, Cursor, and Antigravity.
 - Fixed Claude global instructions to symlink AGENTS.md directly to ~/.claude/CLAUDE.md.

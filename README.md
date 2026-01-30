@@ -86,7 +86,7 @@ Common changes you might want to make:
 | **Change git settings**    | `git/.gitconfig`   | Modify aliases, behavior (user info in `~/.gitconfig.local`) |
 | **Update agent rules**     | `AGENTS.md`        | Edit shared instructions (Codex/Claude/Cursor)               |
 | **Add slash commands**     | `ai/commands/`     | Add `.md` files with prompts                                 |
-| **Add skills**             | `ai/skills/`       | Add or edit skill folders                                    |
+| **Add skills**             | `npx skills add`   | Install globally via Skills CLI                              |
 | **Modify shell behavior**  | `zsh/.zshrc`       | Edit PATH, themes, plugins                                   |
 
 ### Updating Other Machines
@@ -219,15 +219,15 @@ gh repo sync
 
 ### Agent Instructions and Commands
 
-| Tool | Rules File | Skills | Commands | MCP Config |
-|------|------------|--------|----------|------------|
-| **Claude** | `~/.claude/CLAUDE.md` | `~/.claude/skills` | `~/.claude/commands` | `~/.claude/mcp.json` |
-| **Codex** | `~/.codex/AGENTS.md` | `~/.codex/skills` | `~/.codex/prompts` | `~/.codex/config.toml` |
-| **Amp** | `~/.config/agents/AGENTS.md` | `~/.config/agents/skills` | `~/.config/agents/commands` | `~/.config/amp/settings.json` |
-| **Cursor** | N/A | N/A | `~/.cursor/commands` | `~/.cursor/mcp.json` |
-| **Antigravity** | `~/.gemini/GEMINI.md` | `~/.gemini/antigravity/global_skills` | Workflows (UI) | `~/.gemini/antigravity/mcp_config.json` |
+| Tool | Rules File | Commands | MCP Config |
+|------|------------|----------|------------|
+| **Claude** | `~/.claude/CLAUDE.md` | `~/.claude/commands` | `~/.claude/mcp.json` |
+| **Codex** | `~/.codex/AGENTS.md` | `~/.codex/prompts` | `~/.codex/config.toml` |
+| **Amp** | `~/.config/agents/AGENTS.md` | `~/.config/agents/commands` | `~/.config/amp/settings.json` |
+| **Cursor** | N/A | `~/.cursor/commands` | `~/.cursor/mcp.json` |
+| **Antigravity** | `~/.gemini/GEMINI.md` | Workflows (UI) | `~/.gemini/antigravity/mcp_config.json` |
 
-All symlinked from `AGENTS.md`, `ai/skills/`, `ai/commands/`, and tool-specific MCP configs in `ai/`.
+Rules and commands symlinked from `AGENTS.md` and `ai/commands/`. Skills installed globally via `npx skills add --global`.
 
 ### AI Coding Assistants
 
