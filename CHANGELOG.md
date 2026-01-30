@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 2026-01-30
+
+- Added Antigravity (Google) setup with skills, rules (GEMINI.md), and MCP config.
+- Unified AI tool configuration: consistent skills, commands, MCP servers, and AGENTS.md across Amp, Claude, Codex, Cursor, and Antigravity.
+- Fixed Claude global instructions to symlink AGENTS.md directly to ~/.claude/CLAUDE.md.
+- Added MCP config files for all tools (amp-settings.json, claude-mcp.json, codex-config.toml, cursor-mcp.json, antigravity-mcp.json).
+
 ## 2026-01-20
 
 - Removed bun from Brewfile.

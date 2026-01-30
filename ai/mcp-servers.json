@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Single source of truth for MCP servers. Run generate-mcp-configs.sh after editing.",
+  "servers": {
+    "graphite": {
+      "type": "command",
+      "command": "gt",
+      "args": ["mcp"],
+      "env": {},
+      "tools": ["stacking PRs", "git workflow"]
+    },
+    "serena": {
+      "type": "command",
+      "command": "uvx",
+      "args": ["--from", "serena-mcp", "serena-mcp"],
+      "env": {},
+      "tools": ["semantic code search", "find symbols", "LSP", "code navigation"]
+    },
+    "sequential-thinking": {
+      "type": "command",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-sequentialthinking"],
+      "env": {},
+      "tools": ["step-by-step reasoning", "complex problem solving"]
+    },
+    "playwright": {
+      "type": "command",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "env": {},
+      "tools": ["browser automation", "web testing", "screenshots"]
+    },
+    "fetch": {
+      "type": "command",
+      "command": "uvx",
+      "args": ["mcp-server-fetch"],
+      "env": {},
+      "tools": ["web content", "URL fetching", "HTML to markdown"]
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      },
+      "tools": ["library docs", "code context"]
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${GITHUB_TOKEN}"
+      },
+      "tools": ["GitHub API", "repos", "issues", "PRs"]
+    },
+    "linear": {
+      "type": "http",
+      "url": "https://mcp.linear.app/sse",
+      "headers": {},
+      "tools": ["Linear issues", "project management"]
+    },
+    "amplitude": {
+      "type": "http",
+      "url": "https://mcp.amplitude.com/mcp",
+      "headers": {},
+      "tools": ["analytics", "product data"]
+    }
+  },
+  "requiredEnvVars": [
+    "CONTEXT7_API_KEY",
+    "GITHUB_TOKEN"
+  ]
+}

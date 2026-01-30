@@ -4,7 +4,7 @@
 
 set -e
 
-DOTFILES_DIR="$HOME/repos/dotfiles"
+DOTFILES_DIR="$HOME/GitHub/cesar-rodriguez/dotfiles"
 BACKUP_DIR="$HOME/dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
 
 echo "Starting dotfiles setup..."
@@ -79,6 +79,93 @@ cd "$DOTFILES_DIR"
 brew bundle
 print_success "Packages installed"
 
+# ===== Setup fzf key bindings =====
+if [ ! -f "$HOME/.fzf.zsh" ]; then
+  echo "Setting up fzf key bindings..."
+  "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish
+  print_success "fzf key bindings installed"
+else
+  print_success "fzf already configured"
+fi
+
+# ===== Setup Node via NVM =====
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+
+if ! command -v node &> /dev/null; then
+  echo "Installing Node LTS via nvm..."
+  nvm install --lts
+  nvm use --lts
+  nvm alias default node
+  print_success "Node installed: $(node --version)"
+else
+  print_success "Node already installed: $(node --version)"
+fi
+
+# ===== Setup Python via pyenv =====
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv &> /dev/null; then
+  eval "$(pyenv init -)"
+  if [ -z "$(pyenv versions --bare)" ]; then
+    echo "Installing Python 3.12 via pyenv..."
+    pyenv install 3.12
+    pyenv global 3.12
+    print_success "Python installed: $(python --version)"
+  else
+    print_success "Python already installed: $(python --version)"
+  fi
+fi
+
+# ===== Setup Colima (Container Runtime) =====
+if command -v colima &> /dev/null; then
+  if ! colima status &> /dev/null; then
+    echo "Starting Colima..."
+    colima start --cpu 4 --memory 8 --disk 60
+    print_success "Colima started"
+  else
+    print_success "Colima already running"
+  fi
+fi
+
+# ===== Install AI CLI Tools (non-Homebrew) =====
+# Amp CLI (curl-based, no npm needed)
+if ! command -v amp &> /dev/null; then
+  echo "Installing Amp CLI..."
+  curl -fsSL https://ampcode.com/install.sh | bash
+  print_success "Amp CLI installed"
+else
+  print_success "Amp CLI already installed"
+fi
+
+# Claude CLI (requires npm)
+if ! command -v claude &> /dev/null; then
+  echo "Installing Claude CLI..."
+  npm install -g @anthropic-ai/claude-code
+  print_success "Claude CLI installed"
+else
+  print_success "Claude CLI already installed"
+fi
+
+# Antigravity CLI (install via shell command)
+if ! command -v agy &> /dev/null; then
+  echo "Installing Antigravity..."
+  echo "Download from: https://antigravity.google/download"
+  echo "After install, run 'agy' from Command Palette to enable CLI"
+  print_warning "Antigravity requires manual download"
+else
+  print_success "Antigravity CLI already installed"
+fi
+
+# Skills CLI (Vercel agent skills ecosystem, requires npm)
+if ! command -v skills &> /dev/null; then
+  echo "Installing Skills CLI..."
+  npm install -g skills
+  print_success "Skills CLI installed"
+else
+  print_success "Skills CLI already installed"
+fi
+
 # ===== Install Oh My Zsh =====
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   echo "Installing Oh My Zsh..."
@@ -114,19 +201,52 @@ create_symlink "$DOTFILES_DIR/git/.gitignore_global" "$HOME/.gitignore_global"
 
 # Claude
 mkdir -p "$HOME/.claude"
-create_symlink "$DOTFILES_DIR/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+create_symlink "$DOTFILES_DIR/AGENTS.md" "$HOME/.claude/CLAUDE.md"
 create_symlink "$DOTFILES_DIR/ai/commands" "$HOME/.claude/commands"
 create_symlink "$DOTFILES_DIR/ai/skills" "$HOME/.claude/skills"
+if [ -f "$DOTFILES_DIR/ai/claude-settings.json" ]; then
+  create_symlink "$DOTFILES_DIR/ai/claude-settings.json" "$HOME/.claude/settings.json"
+fi
+if [ -f "$DOTFILES_DIR/ai/claude-mcp.json" ]; then
+  create_symlink "$DOTFILES_DIR/ai/claude-mcp.json" "$HOME/.claude/mcp.json"
+fi
 
 # Codex
 mkdir -p "$HOME/.codex"
 create_symlink "$DOTFILES_DIR/AGENTS.md" "$HOME/.codex/AGENTS.md"
 create_symlink "$DOTFILES_DIR/ai/commands" "$HOME/.codex/prompts"
 create_symlink "$DOTFILES_DIR/ai/skills" "$HOME/.codex/skills"
+if [ -f "$DOTFILES_DIR/ai/codex-config.toml" ]; then
+  create_symlink "$DOTFILES_DIR/ai/codex-config.toml" "$HOME/.codex/config.toml"
+fi
 
 # Cursor
 mkdir -p "$HOME/.cursor"
 create_symlink "$DOTFILES_DIR/ai/commands" "$HOME/.cursor/commands"
+if [ -f "$DOTFILES_DIR/ai/cursor-mcp.json" ]; then
+  create_symlink "$DOTFILES_DIR/ai/cursor-mcp.json" "$HOME/.cursor/mcp.json"
+fi
+if [ -f "$DOTFILES_DIR/ai/cursor-cli-config.json" ]; then
+  create_symlink "$DOTFILES_DIR/ai/cursor-cli-config.json" "$HOME/.cursor/cli-config.json"
+fi
+
+# Amp
+mkdir -p "$HOME/.config/amp"
+mkdir -p "$HOME/.config/agents"
+if [ -f "$DOTFILES_DIR/ai/amp-settings.json" ]; then
+  create_symlink "$DOTFILES_DIR/ai/amp-settings.json" "$HOME/.config/amp/settings.json"
+fi
+create_symlink "$DOTFILES_DIR/ai/skills" "$HOME/.config/agents/skills"
+create_symlink "$DOTFILES_DIR/ai/commands" "$HOME/.config/agents/commands"
+create_symlink "$DOTFILES_DIR/AGENTS.md" "$HOME/.config/agents/AGENTS.md"
+
+# Antigravity (Google)
+mkdir -p "$HOME/.gemini/antigravity"
+create_symlink "$DOTFILES_DIR/AGENTS.md" "$HOME/.gemini/GEMINI.md"
+create_symlink "$DOTFILES_DIR/ai/skills" "$HOME/.gemini/antigravity/global_skills"
+if [ -f "$DOTFILES_DIR/ai/antigravity-mcp.json" ]; then
+  create_symlink "$DOTFILES_DIR/ai/antigravity-mcp.json" "$HOME/.gemini/antigravity/mcp_config.json"
+fi
 
 # Shared scripts
 mkdir -p "$HOME/.local/bin"
@@ -142,6 +262,38 @@ if [ ! -f "$HOME/.env.local" ]; then
 else
   print_success ".env.local already exists"
 fi
+
+# Source env for validation and MCP generation
+source "$HOME/.env.local"
+
+# Validate required env vars for MCP servers
+REQUIRED_ENV_VARS=(
+  "GITHUB_TOKEN"
+  "CONTEXT7_API_KEY"
+)
+
+MISSING_VARS=()
+for var in "${REQUIRED_ENV_VARS[@]}"; do
+  if [ -z "${!var}" ]; then
+    MISSING_VARS+=("$var")
+  fi
+done
+
+if [ ${#MISSING_VARS[@]} -gt 0 ]; then
+  print_warning "Missing required env vars in ~/.env.local:"
+  for var in "${MISSING_VARS[@]}"; do
+    echo "  - $var"
+  done
+  echo ""
+  echo "Some MCP servers will not work until these are set."
+else
+  print_success "All required env vars present"
+fi
+
+# ===== Generate MCP Configs =====
+echo "Generating MCP configs..."
+"$DOTFILES_DIR/ai/generate-mcp-configs.sh"
+print_success "MCP configs generated"
 
 # ===== Configure Git User =====
 CURRENT_NAME=$(git config --global user.name 2>/dev/null)

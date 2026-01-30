@@ -1,11 +1,11 @@
 # AGENTS.md
 
-Owner: Christian A. Rodriguez Encarnación
+Owner: Cesar Rodriguez
 Style: concise, telegraphic, noun-phrases ok, minimal tokens. No emojis.
 
 ## Agent Protocol
 
-- Timezone: America/Puerto_Rico (UTC-4).
+- Timezone: America/New_York
 - Use `gh` for GitHub; avoid the web UI. Use `gh pr view/diff` for viewing PRs
 - Use concise conventional commits: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`, `build:`, `ci:`, `chore:`. Add `!` for breaking changes or scope like `feat(api):`.
 - ASCII only in docs unless a file already uses Unicode.
@@ -19,7 +19,7 @@ Style: concise, telegraphic, noun-phrases ok, minimal tokens. No emojis.
 
 ## Workspace
 
-- Primary workspace: `~/repos`.
+- Primary workspace: `~/GitHub`.
 - If a repo is missing: `gh repo clone <owner>/<repo> <path>`.
 
 ## Docs

@@ -32,9 +32,16 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
 nvm use default --silent 2>/dev/null
 
-# Rbenv (Ruby)
-if command -v rbenv 1>/dev/null 2>&1; then
-  eval "$(rbenv init - zsh)"
+# Pyenv (Python)
+if command -v pyenv 1>/dev/null 2>&1; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+fi
+
+# uv (Fast Python package manager)
+if command -v uv 1>/dev/null 2>&1; then
+  eval "$(uv generate-shell-completion zsh)"
 fi
 
 # ===== Modern CLI Tools =====
@@ -50,6 +57,18 @@ fi
 # bat - Better cat
 export BAT_THEME="TwoDark"
 
+# eza - Better ls (aliased in .zsh_aliases)
+
+# Go
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+
+# Google Cloud SDK
+if [ -f "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" ]; then
+  source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+  source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+fi
+
 # ===== Aliases =====
 [ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
 
@@ -58,37 +77,22 @@ export BAT_THEME="TwoDark"
 # This file is gitignored and machine-specific
 [ -f ~/.env.local ] && source ~/.env.local
 
-# Added by Antigravity
-export PATH="/Users/chris/.antigravity/antigravity/bin:$PATH"
+# ===== Tool-specific PATH & Config =====
 
-# Fastlane update_fastlane command needs this
-export GEM_HOME=~/.gems
-export PATH=$PATH:~/.gems/bin
+# Amp CLI
+export PATH="$HOME/.amp/bin:$PATH"
+
+# Antigravity
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/chris/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
-
-# ClawdHub default install directory
-alias hub="clawdhub --dir ~/.clawdbot/skills"
-
-# bun completions
-[ -s "/Users/christian/.bun/_bun" ] && source "/Users/christian/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-HAUS_HOME="/Users/christian/repos"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"

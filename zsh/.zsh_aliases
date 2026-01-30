@@ -41,6 +41,11 @@ alias uvi="uv pip install"
 alias uvr="uv pip install -r requirements.txt"
 alias uvs="uv pip sync"
 
+# ruff (linter/formatter)
+alias rf="ruff check"
+alias rff="ruff check --fix"
+alias rfmt="ruff format"
+
 # ===== Node/TypeScript Development =====
 alias ni="npm install"
 alias nr="npm run"
@@ -51,6 +56,15 @@ alias ns="npm start"
 alias ys="yarn start"
 alias yb="yarn build"
 alias yd="yarn dev"
+
+# pnpm
+alias pi="pnpm install"
+alias pa="pnpm add"
+alias pr="pnpm run"
+alias prd="pnpm run dev"
+alias prb="pnpm run build"
+alias prt="pnpm run test"
+alias px="pnpm dlx"
 
 # ===== Utilities =====
 alias ..="cd .."
@@ -85,11 +99,77 @@ killport() {
   lsof -ti :"$1" | xargs kill -9
 }
 
-# ===== Docker shortcuts (if needed) =====
+# ===== Docker & Colima =====
 alias d="docker"
-alias dc="docker-compose"
+alias dc="docker compose"
 alias dps="docker ps"
 alias dimg="docker images"
+alias dcup="docker compose up -d"
+alias dcdown="docker compose down"
+alias dclogs="docker compose logs -f"
+alias colstart="colima start"
+alias colstop="colima stop"
+
+# ===== Kubernetes =====
+alias k="kubectl"
+alias kgp="kubectl get pods"
+alias kgs="kubectl get svc"
+alias kgd="kubectl get deployments"
+alias kga="kubectl get all"
+alias kaf="kubectl apply -f"
+alias kdf="kubectl delete -f"
+alias klogs="kubectl logs -f"
+alias kexec="kubectl exec -it"
+alias kctx="kubectl config use-context"
+alias kns="kubectl config set-context --current --namespace"
+alias h="helm"
+alias k9="k9s"
+
+# ===== Go Development =====
+alias gol="golangci-lint run"
+alias golf="golangci-lint run --fix"
+alias godev="air"
+alias got="go test ./..."
+alias gotv="go test -v ./..."
+alias gob="go build"
+alias gor="go run ."
+alias gomod="go mod tidy"
+
+# ===== Terraform / OpenTofu =====
+alias tf="tofu"
+alias tfi="tofu init"
+alias tfp="tofu plan"
+alias tfa="tofu apply"
+alias tfd="tofu destroy"
+alias tfv="tofu validate"
+alias tff="tofu fmt -recursive"
+
+# ===== Cloud CLIs =====
+alias awslogin="aws sso login"
+alias azlogin="az login"
+alias gclogin="gcloud auth login"
+
+# ===== Graphite (Stacked PRs) =====
+alias gts="gt status"
+alias gtc="gt create"
+alias gtsub="gt submit --no-interactive"
+alias gtup="gt up"
+alias gtdn="gt down"
+alias gtsync="gt sync"
+
+# ===== AI Tools =====
+alias cl="claude"
+alias cx="codex"
+alias am="amp"
+
+# ===== Search (ripgrep & fd) =====
+alias rg="rg --smart-case"
+alias rgf="rg --files-with-matches"
+alias fdf="fd --type f"
+alias fdd="fd --type d"
+
+# ===== Safe delete =====
+alias rm="trash"
 
 # ===== System =====
 alias update="brew update && brew upgrade && brew cleanup"

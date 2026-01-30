@@ -1,0 +1,44 @@
+{
+  "mcpServers": {
+    "graphite": {
+      "command": "gt",
+      "args": ["mcp"]
+    },
+    "serena": {
+      "command": "uvx",
+      "args": ["--from", "serena-mcp", "serena-mcp"]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-sequentialthinking"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      }
+    },
+    "github": {
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${GITHUB_TOKEN}"
+      }
+    },
+    "linear": {
+      "url": "https://mcp.linear.app/sse",
+      "headers": {}
+    },
+    "amplitude": {
+      "url": "https://mcp.amplitude.com/mcp",
+      "headers": {}
+    }
+  }
+}

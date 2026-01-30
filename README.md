@@ -3,8 +3,8 @@
 My personal dotfiles. Installs essential CLI tools, configures shell, git, and development workflows.
 
 ```bash
-gh repo clone chrisrodz/dotfiles ~/repos/dotfiles
-cd ~/repos/dotfiles
+gh repo clone cesar-rodriguez/dotfiles ~/GitHub/cesar-rodriguez/dotfiles
+cd ~/GitHub/cesar-rodriguez/dotfiles
 ./bootstrap.sh
 ```
 
@@ -21,8 +21,8 @@ cd ~/repos/dotfiles
 2. **Clone and run bootstrap**
 
    ```bash
-   gh repo clone chrisrodz/dotfiles ~/repos/dotfiles
-   cd ~/repos/dotfiles
+   gh repo clone cesar-rodriguez/dotfiles ~/GitHub/cesar-rodriguez/dotfiles
+   cd ~/GitHub/cesar-rodriguez/dotfiles
    ./bootstrap.sh
    ```
 
@@ -30,7 +30,7 @@ cd ~/repos/dotfiles
 
    ```bash
    # Git credentials (required for commits)
-   cp ~/repos/dotfiles/git/.gitconfig.local.example ~/.gitconfig.local
+   cp ~/GitHub/cesar-rodriguez/dotfiles/git/.gitconfig.local.example ~/.gitconfig.local
    cursor ~/.gitconfig.local  # Add your name and email
 
    # Environment secrets (API keys, tokens, etc.)
@@ -57,17 +57,23 @@ Rerun anytime to update symlinks or install missing packages.
 
 ### Global AI CLI Dependencies
 
-These dotfiles rely on both the Claude Code CLI and the OpenAI Codex CLI being installed globally so that the companion IDEs/commands work everywhere on the system. `brew bundle` (run inside `bootstrap.sh`) handles this automatically via the `Brewfile`, but you can install or update them manually at any time:
+Bootstrap installs AI CLIs automatically:
 
 ```bash
-brew tap anthropic-ai/claude
-brew install claude-code
+# Codex & Claude desktop (via Homebrew cask)
+brew install --cask codex claude cursor
 
-brew tap openai/codex
-brew install codex-cli
+# Claude CLI (via npm)
+npm install -g @anthropic-ai/claude-code
+
+# Amp CLI (via curl)
+curl -fsSL https://ampcode.com/install.sh | bash
+
+# Skills CLI (via npm)
+npm install -g skills
 ```
 
-The CLIs will then be available system-wide (e.g., `claude-code --help`, `codex --help`).
+The CLIs will then be available system-wide (`claude --help`, `codex --help`, `amp --help`).
 
 ## Customization
 
@@ -88,7 +94,7 @@ Common changes you might want to make:
 After making changes:
 
 ```bash
-cd ~/repos/dotfiles
+cd ~/GitHub/cesar-rodriguez/dotfiles
 # Commit your changes with git/gh, then on other machines:
 gh repo sync
 ./bootstrap.sh  # Refresh symlinks
@@ -116,12 +122,54 @@ gh repo sync
 - `jq` / `yq` - JSON/YAML processors
 - `httpie` - User-friendly HTTP client
 - `gh` - GitHub CLI
+- `vercel-cli` - Vercel CLI
+
+**AI Tools**
+
+- `codex` (cask) - OpenAI Codex CLI
+- `claude` (cask) - Anthropic Claude desktop
+- `cursor` (cask) - Cursor IDE
+- `antigravity` - Google Antigravity (manual download)
+- `amp` - Amp CLI (installed via curl)
+- `claude` CLI - Claude Code CLI (installed via npm)
+
+**Cloud & Infrastructure**
+
+- `aws-cli` - AWS CLI v2
+- `azure-cli` - Azure CLI
+- `google-cloud-sdk` - GCP CLI (gcloud)
+- `terraform` / `opentofu` - Infrastructure as Code
+
+**Kubernetes & Containers**
+
+- `colima` - Container runtime (Docker alternative)
+- `docker` - Docker CLI
+- `kubernetes-cli` - kubectl
+- `helm` - Kubernetes package manager
+- `eksctl` - EKS cluster management
+- `k9s` - Kubernetes TUI
+- `act` - Local GitHub Actions runner
+
+**Languages & Tooling**
+
+- `go` - Go programming language
+- `golangci-lint` - Go linter aggregator
+- `air` - Go hot reload
+- `pyenv` - Python version manager
+- `ruff` - Fast Python linter & formatter
+- `pnpm` - Fast Node package manager
+
+**Stacked PRs**
+
+- `graphite` (gt) - Stacked PR workflow
 
 **System Utils**
 
 - `htop` - Process viewer
 - `tree` - Directory visualization
 - `trash` - Safe delete CLI
+- `tmux` - Terminal multiplexer
+- `iterm2` (cask) - Terminal emulator
 
 **Version Managers**
 
@@ -133,6 +181,7 @@ gh repo sync
 
 - `git` - Latest version
 - `gpg` - For commit signing
+- `terrascan` - IaC security scanner
 
 ### Shell Configuration
 
@@ -141,12 +190,20 @@ gh repo sync
 - `zsh-autosuggestions` - Command suggestions
 - `zsh-syntax-highlighting` - Syntax highlighting
 
-**40+ Aliases** including:
+**100+ Aliases** including:
 
-- Modern CLI shortcuts (`ls` -> `eza`, `cat` -> `bat`, `cd` -> `zoxide`)
+- Modern CLI shortcuts (`ls` -> `eza`, `cat` -> `bat`, `cd` -> `zoxide`, `rm` -> `trash`)
 - Git shortcuts (`gs`, `ga`, `gc`, `gp`, `gl`, `glog`)
-- Python helpers (`venv`, `activate`, `pyclean`)
-- Node shortcuts (`nr`, `nrd`, `nrb`)
+- Python helpers (`venv`, `activate`, `pyclean`, `rf`, `rff`, `rfmt`)
+- Node/pnpm shortcuts (`nr`, `nrd`, `pi`, `pa`, `pr`, `prd`, `px`)
+- Docker & Colima (`d`, `dc`, `dcup`, `dcdown`, `colstart`, `colstop`)
+- Kubernetes (`k`, `kgp`, `kgs`, `kga`, `klogs`, `kexec`, `k9`)
+- Go development (`gol`, `golf`, `godev`, `got`, `gob`, `gor`)
+- Terraform/OpenTofu (`tf`, `tfi`, `tfp`, `tfa`, `tfd`)
+- Cloud CLIs (`awslogin`, `azlogin`, `gclogin`)
+- Graphite stacked PRs (`gts`, `gtc`, `gtsub`, `gtsync`)
+- AI tools (`cl`, `cx`, `am`)
+- Search (`rg`, `rgf`, `fdf`, `fdd`)
 - Utils (`mkcd`, `port`, `killport`, `serve`)
 
 ### Git Configuration
@@ -162,14 +219,23 @@ gh repo sync
 
 ### Agent Instructions and Commands
 
-- Canonical rules: `AGENTS.md`
-- Pointer for Claude: `claude/CLAUDE.md`
-- Commands: `ai/commands` (symlinked to `~/.codex/prompts`, `~/.claude/commands`, `~/.cursor/commands`)
-- Skills: `ai/skills` (symlinked to `~/.codex/skills`, `~/.claude/skills`)
+| Tool | Rules File | Skills | Commands | MCP Config |
+|------|------------|--------|----------|------------|
+| **Claude** | `~/.claude/CLAUDE.md` | `~/.claude/skills` | `~/.claude/commands` | `~/.claude/mcp.json` |
+| **Codex** | `~/.codex/AGENTS.md` | `~/.codex/skills` | `~/.codex/prompts` | `~/.codex/config.toml` |
+| **Amp** | `~/.config/agents/AGENTS.md` | `~/.config/agents/skills` | `~/.config/agents/commands` | `~/.config/amp/settings.json` |
+| **Cursor** | N/A | N/A | `~/.cursor/commands` | `~/.cursor/mcp.json` |
+| **Antigravity** | `~/.gemini/GEMINI.md` | `~/.gemini/antigravity/global_skills` | Workflows (UI) | `~/.gemini/antigravity/mcp_config.json` |
 
-Bootstrap wires the symlinks into the correct tool locations.
+All symlinked from `AGENTS.md`, `ai/skills/`, `ai/commands/`, and tool-specific MCP configs in `ai/`.
 
 ### AI Coding Assistants
 
-- `claude-code` - Global Claude Code CLI installed via Homebrew for Anthropic workflows
-- `codex-cli` - Global OpenAI Codex CLI installed via Homebrew for Codex CLI tooling
+- `claude` - Claude Code CLI (installed via npm)
+- `codex` - OpenAI Codex CLI (installed via Homebrew cask)
+- `amp` - Amp CLI (installed via curl)
+- `cursor` - Cursor IDE with CLI (installed via Homebrew cask)
+- `antigravity` - Google Antigravity IDE (manual download from https://antigravity.google/download)
+- `skills` - Vercel agent skills CLI (installed via npm)
+
+Bootstrap sets up MCP configs, skills, and rules for all AI tools from templates in `ai/`.

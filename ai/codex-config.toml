@@ -1,0 +1,32 @@
+model = "gpt-5.1-codex-mini"
+model_reasoning_effort = "medium"
+
+# MCP Servers
+[mcp_servers.graphite]
+command = "gt"
+args = ["mcp"]
+
+[mcp_servers.serena]
+command = "uvx"
+args = ["--from", "serena-mcp", "serena-mcp"]
+
+[mcp_servers.sequential-thinking]
+command = "npx"
+args = ["-y", "@anthropic/mcp-sequentialthinking"]
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]
+
+[mcp_servers.fetch]
+command = "uvx"
+args = ["mcp-server-fetch"]
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+
+[mcp_servers.context7.env]
+CONTEXT7_API_KEY = "${CONTEXT7_API_KEY}"
+
+# Project trust levels are machine-specific and managed by codex
