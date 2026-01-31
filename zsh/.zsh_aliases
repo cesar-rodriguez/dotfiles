@@ -173,4 +173,14 @@ alias rm="trash"
 
 # ===== System =====
 alias update="brew update && brew upgrade && brew cleanup"
+alias skills-update="npx skills add schpet/linear-cli --global -y && \
+  npx skills add anthropics/skills --skill pdf --skill docx --skill mcp-builder --skill pptx --skill skill-creator --skill xlsx --skill frontend-design --global -y && \
+  npx skills add SawyerHood/dev-browser --global -y && \
+  npx skills add snarktank/amp-skills --skill agent-browser --skill compound-engineering --global -y && \
+  npx skills add snarktank/ralph --skill prd --skill ralph --global -y && \
+  npx skills add vercel-labs/vercel-composition-patterns --skill vercel-react-best-practices --skill vercel-react-native-skills --skill web-design-guidelines --global -y && \
+  npx skills add steipete/agent-scripts --skill create-cli --skill brave-search --skill markdown-converter --skill openai-image-gen --skill video-transcript-downloader --global -y && \
+  npx skills add chrisrodz/dotfiles --skill polishing-issues --global -y && \
+  npx skills add hashicorp/agent-skills --skill terraform-style-guide --global -y && \
+  npx skills add antonbabenko/terraform-skill --skill terraform-skill --global -y"
 alias myip="curl ifconfig.me"

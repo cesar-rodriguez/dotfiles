@@ -23,13 +23,6 @@
       "env": {},
       "tools": ["step-by-step reasoning", "complex problem solving"]
     },
-    "playwright": {
-      "type": "command",
-      "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest"],
-      "env": {},
-      "tools": ["browser automation", "web testing", "screenshots"]
-    },
     "fetch": {
       "type": "command",
       "command": "uvx",

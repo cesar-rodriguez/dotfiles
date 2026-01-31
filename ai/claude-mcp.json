@@ -21,13 +21,6 @@
         "@anthropic/mcp-sequentialthinking"
       ]
     },
-    "playwright": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@playwright/mcp@latest"
-      ]
-    },
     "fetch": {
       "command": "uvx",
       "args": [

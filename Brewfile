@@ -40,9 +40,9 @@ cask "claude"       # Anthropic Claude desktop
 cask "cursor"       # Cursor IDE (includes CLI)
 
 # Cloud & Infrastructure
-brew "aws-cli"      # AWS CLI (awscli v2)
+brew "awscli"       # AWS CLI v2
 brew "azure-cli"    # Azure CLI
-cask "google-cloud-sdk"  # GCP CLI (gcloud)
+cask "gcloud-cli"   # GCP CLI (gcloud)
 brew "terraform"    # Infrastructure as Code
 brew "opentofu"     # Infrastructure as Code
 

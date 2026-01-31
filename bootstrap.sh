@@ -138,6 +138,21 @@ else
   print_success "Amp CLI already installed"
 fi
 
+# Vercel agent-browser CLI
+if ! command -v agent-browser &> /dev/null; then
+  echo "Installing agent-browser CLI..."
+  npm install -g agent-browser
+  print_success "agent-browser CLI installed"
+else
+  print_success "agent-browser CLI already installed"
+fi
+
+if agent-browser install &> /dev/null; then
+  print_success "agent-browser runtime setup complete"
+else
+  print_warning "agent-browser runtime setup failed; run 'agent-browser install' manually"
+fi
+
 # Claude CLI (requires npm)
 if ! command -v claude &> /dev/null; then
   echo "Installing Claude CLI..."
@@ -254,8 +269,8 @@ done
 echo "Installing agent skills..."
 npx skills add schpet/linear-cli --global -y
 npx skills add anthropics/skills --skill pdf --skill docx --skill mcp-builder --skill pptx --skill skill-creator --skill xlsx --skill frontend-design --global -y
-npx skills add SawyerHood/dev-browser --global -y
-npx skills add snarktank/amp-skills --skill agent-browser --skill compound-engineering --global -y
+npx skills add vercel-labs/agent-browser --skill agent-browser --global -y
+npx skills add snarktank/amp-skills --skill compound-engineering --global -y
 npx skills add snarktank/ralph --skill prd --skill ralph --global -y
 npx skills add vercel-labs/vercel-composition-patterns --skill vercel-react-best-practices --skill vercel-react-native-skills --skill web-design-guidelines --global -y
 npx skills add steipete/agent-scripts --skill create-cli --skill brave-search --skill markdown-converter --skill openai-image-gen --skill video-transcript-downloader --global -y
