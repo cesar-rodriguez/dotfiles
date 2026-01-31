@@ -128,6 +128,24 @@ if command -v colima &> /dev/null; then
   fi
 fi
 
+# ===== Manage Terraform via tfenv =====
+if command -v tfenv &> /dev/null; then
+  latest_tf=$(tfenv list-remote | awk 'NF' | tail -n 1)
+
+  if [ -n "$latest_tf" ]; then
+    if ! tfenv list | grep -Fxq "$latest_tf" &> /dev/null; then
+      tfenv install "$latest_tf"
+    fi
+
+    tfenv use "$latest_tf"
+    print_success "Terraform switched to $latest_tf via tfenv"
+  else
+    print_warning "tfenv could not determine the latest Terraform version"
+  fi
+else
+  print_warning "tfenv not installed (add it to Brewfile to manage Terraform)"
+fi
+
 # ===== Install AI CLI Tools (non-Homebrew) =====
 # Amp CLI (curl-based, no npm needed)
 if ! command -v amp &> /dev/null; then

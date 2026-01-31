@@ -16,3 +16,6 @@ ai/tmp/
 
 # Codex system skills cache
 ai/skills/.system/
+
+# Log files
+*.log

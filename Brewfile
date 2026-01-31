@@ -43,7 +43,7 @@ cask "cursor"       # Cursor IDE (includes CLI)
 brew "awscli"       # AWS CLI v2
 brew "azure-cli"    # Azure CLI
 cask "gcloud-cli"   # GCP CLI (gcloud)
-brew "terraform"    # Infrastructure as Code
+brew "tfenv"        # Terraform version manager
 brew "opentofu"     # Infrastructure as Code
 
 # Kubernetes & Containers
