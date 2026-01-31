@@ -16,7 +16,13 @@
       "url": "https://mcp.linear.app/sse",
       "headers": {}
     },
-    "amplitude": {
+    "stackgen-mcp-http": {
+      "url": "https://stage.dev.stackgen.com/api/mcp/sse",
+      "headers": {
+        "authorization": "Bearer ${STACKGEN_PAT}"
+      }
+    },
+    "Amplitude": {
       "url": "https://mcp.amplitude.com/mcp",
       "headers": {}
     }

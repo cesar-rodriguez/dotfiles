@@ -52,7 +52,15 @@
       "headers": {},
       "tools": ["Linear issues", "project management"]
     },
-    "amplitude": {
+    "stackgen-mcp-http": {
+      "type": "http",
+      "url": "https://stage.dev.stackgen.com/api/mcp/sse",
+      "headers": {
+        "authorization": "Bearer ${STACKGEN_PAT}"
+      },
+      "tools": ["Stackgen generative models", "context streaming"]
+    },
+    "Amplitude": {
       "type": "http",
       "url": "https://mcp.amplitude.com/mcp",
       "headers": {},
@@ -61,6 +69,7 @@
   },
   "requiredEnvVars": [
     "CONTEXT7_API_KEY",
-    "GITHUB_TOKEN"
+    "GITHUB_TOKEN",
+    "STACKGEN_PAT"
   ]
 }

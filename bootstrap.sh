@@ -23,16 +23,38 @@ print_warning() {
   echo -e "${YELLOW}WARN${NC} $1"
 }
 
+# Error helpers
 print_error() {
   echo -e "${RED}ERR${NC} $1"
 }
 
+is_same_inode() {
+  if [ ! -e "$1" ] || [ ! -e "$2" ]; then
+    return 1
+  fi
+  [ "$(stat -f '%d:%i' "$1")" = "$(stat -f '%d:%i' "$2")" ]
+}
+
 # Backup existing files
 backup_if_exists() {
-  if [ -f "$1" ] || [ -d "$1" ]; then
+  if [ -f "$1" ] || [ -d "$1" ] || [ -L "$1" ]; then
     mkdir -p "$BACKUP_DIR"
+    dest="$BACKUP_DIR/$(basename "$1")"
+    set +e
     mv "$1" "$BACKUP_DIR/"
-    print_warning "Backed up $1 to $BACKUP_DIR"
+    mv_status=$?
+    set -e
+
+    if [ "$mv_status" -ne 0 ]; then
+      if [ -e "$dest" ] && is_same_inode "$1" "$dest"; then
+        print_warning "Skipping backup for $1; identical to $dest"
+      else
+        print_error "Failed to back up $1 (mv exit $mv_status)"
+        exit "$mv_status"
+      fi
+    else
+      print_warning "Backed up $1 to $BACKUP_DIR"
+    fi
   fi
 }
 
@@ -128,22 +150,43 @@ if command -v colima &> /dev/null; then
   fi
 fi
 
-# ===== Manage Terraform via tfenv =====
-if command -v tfenv &> /dev/null; then
-  latest_tf=$(tfenv list-remote | awk 'NF' | tail -n 1)
-
-  if [ -n "$latest_tf" ]; then
-    if ! tfenv list | grep -Fxq "$latest_tf" &> /dev/null; then
-      tfenv install "$latest_tf"
+# ===== Ensure Docker Desktop =====
+if ! command -v docker &> /dev/null; then
+  echo "Docker CLI not found; installing Docker Desktop..."
+  if brew install --cask docker; then
+    print_success "Docker Desktop installed"
+    if ! open -a Docker &> /dev/null; then
+      print_warning "Docker installed but could not be auto-started; launch Docker Desktop manually"
+    else
+      print_success "Docker Desktop launched"
     fi
-
-    tfenv use "$latest_tf"
-    print_success "Terraform switched to $latest_tf via tfenv"
   else
-    print_warning "tfenv could not determine the latest Terraform version"
+    print_error "Docker Desktop installation failed"
   fi
 else
-  print_warning "tfenv not installed (add it to Brewfile to manage Terraform)"
+  print_success "Docker CLI already installed"
+fi
+
+# ===== Manage Terraform & OpenTofu via tenv =====
+if command -v tenv &> /dev/null; then
+  _tenv_tools=("tf:Terraform" "tofu:OpenTofu")
+
+  for entry in "${_tenv_tools[@]}"; do
+    tool="${entry%%:*}"
+    display_name="${entry#*:}"
+
+    if tenv "$tool" install latest; then
+      if tenv "$tool" use latest; then
+        print_success "$display_name switched to latest via tenv"
+      else
+        print_warning "tenv failed to use the latest $display_name release"
+      fi
+    else
+      print_warning "tenv failed to install the latest $display_name release"
+    fi
+  done
+else
+  print_warning "tenv not installed (add it to the Brewfile to manage Terraform/OpenTofu)"
 fi
 
 # ===== Install AI CLI Tools (non-Homebrew) =====
@@ -165,7 +208,8 @@ else
   print_success "agent-browser CLI already installed"
 fi
 
-if agent-browser install &> /dev/null; then
+echo "Installing agent-browser runtime (may prompt for input)..."
+if agent-browser install; then
   print_success "agent-browser runtime setup complete"
 else
   print_warning "agent-browser runtime setup failed; run 'agent-browser install' manually"
@@ -313,6 +357,7 @@ source "$HOME/.env.local"
 REQUIRED_ENV_VARS=(
   "GITHUB_TOKEN"
   "CONTEXT7_API_KEY"
+  "STACKGEN_PAT"
 )
 
 MISSING_VARS=()
@@ -334,9 +379,20 @@ else
 fi
 
 # ===== Generate MCP Configs =====
-echo "Generating MCP configs..."
-"$DOTFILES_DIR/ai/generate-mcp-configs.sh"
-print_success "MCP configs generated"
+if [ -f "$DOTFILES_DIR/ai/generate-mcp-configs.sh" ]; then
+  if [ ${#MISSING_VARS[@]} -eq 0 ]; then
+    echo "Generating MCP configs..."
+    if (cd "$DOTFILES_DIR/ai" && ./generate-mcp-configs.sh); then
+      print_success "MCP configs generated"
+    else
+      print_warning "MCP config generation failed; rerun ./ai/generate-mcp-configs.sh after fixing issues"
+    fi
+  else
+    print_warning "Skipping MCP config generation (missing env vars: ${MISSING_VARS[*]}); update ~/.env.local and rerun ./ai/generate-mcp-configs.sh manually"
+  fi
+else
+  print_warning "generate-mcp-configs.sh not found; skip MCP config generation"
+fi
 
 # ===== Configure Git User =====
 CURRENT_NAME=$(git config --global user.name 2>/dev/null)

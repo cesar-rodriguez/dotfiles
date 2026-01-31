@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added `tenv` for Terraform/OpenTofu, switched Docker handling to detect/install Desktop, and ensure agent-browser runtime no longer blocks bootstrap.
+- Documented MCP generation step, added Stackgen/Amplitude servers + `STACKGEN_PAT` env token, and made the generator idempotent with change-only writes.
+
 ## 2026-01-30
 
 - Migrated agent skills to global installation via `npx skills add --global`. Skills are now installed from public registries (anthropics/skills, steipete/agent-scripts, snarktank/amp-skills, snarktank/ralph, vercel-labs/vercel-composition-patterns, hashicorp/agent-skills, antonbabenko/terraform-skill, chrisrodz/dotfiles) instead of being bundled in the repo.

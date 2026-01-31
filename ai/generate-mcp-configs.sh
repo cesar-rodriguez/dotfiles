@@ -2,7 +2,7 @@
 # Generate tool-specific MCP configs from mcp-servers.json
 # Substitutes ${VAR} placeholders with actual env values
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MCP_SOURCE="$SCRIPT_DIR/mcp-servers.json"
@@ -28,20 +28,37 @@ substitute_env() {
   echo "$str"
 }
 
+replace_if_changed() {
+  local tmp=$1
+  local output=$2
+
+  if [ -f "$output" ] && cmp -s "$output" "$tmp"; then
+    rm -f "$tmp"
+    echo "  -> $output (unchanged)"
+  else
+    mv "$tmp" "$output"
+    echo "  -> $output"
+  fi
+}
+
 # Generate Cursor MCP config
 generate_cursor() {
   local output="$SCRIPT_DIR/cursor-mcp.json"
   echo "Generating Cursor MCP config..."
-  
+  local tmp
+  tmp=$(mktemp)
+  trap 'rm -f "$tmp"' RETURN
+
   jq -r '.servers | to_entries | map(select(.value.type == "http")) | 
     reduce .[] as $s ({}; 
       .[$s.key] = {
         url: $s.value.url,
         headers: $s.value.headers
       }
-    ) | {mcpServers: .}' "$MCP_SOURCE" > "$output"
-  
-  echo "  -> $output"
+    ) | {mcpServers: .}' "$MCP_SOURCE" > "$tmp"
+
+  trap - RETURN
+  replace_if_changed "$tmp" "$output"
 }
 
 # Generate Amp MCP config (merges into amp-settings.json)
@@ -67,11 +84,16 @@ generate_amp() {
         .[$s.key] = {url: $s.value.url}
       end
     )' "$MCP_SOURCE")
-  
+
   # Merge
-  echo "$existing_settings" | jq --argjson mcp "$mcp_servers" '. + {"amp.mcpServers": $mcp}' > "$output"
-  
-  echo "  -> $output"
+  local tmp
+  tmp=$(mktemp)
+  trap 'rm -f "$tmp"' RETURN
+
+  echo "$existing_settings" | jq --argjson mcp "$mcp_servers" '. + {"amp.mcpServers": $mcp}' > "$tmp"
+
+  trap - RETURN
+  replace_if_changed "$tmp" "$output"
 }
 
 # Generate Claude MCP config (claude_desktop_config.json format)
@@ -79,6 +101,10 @@ generate_claude() {
   local output="$SCRIPT_DIR/claude-mcp.json"
   echo "Generating Claude MCP config..."
   
+  local tmp
+  tmp=$(mktemp)
+  trap 'rm -f "$tmp"' RETURN
+
   jq -r '.servers | to_entries | 
     reduce .[] as $s ({}; 
       if $s.value.type == "command" then
@@ -86,9 +112,10 @@ generate_claude() {
       else
         .[$s.key] = {url: $s.value.url, headers: $s.value.headers}
       end
-    ) | {mcpServers: .}' "$MCP_SOURCE" > "$output"
-  
-  echo "  -> $output"
+    ) | {mcpServers: .}' "$MCP_SOURCE" > "$tmp"
+
+  trap - RETURN
+  replace_if_changed "$tmp" "$output"
 }
 
 # Validate required env vars

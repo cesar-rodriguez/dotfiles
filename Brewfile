@@ -43,21 +43,20 @@ cask "cursor"       # Cursor IDE (includes CLI)
 brew "awscli"       # AWS CLI v2
 brew "azure-cli"    # Azure CLI
 cask "gcloud-cli"   # GCP CLI (gcloud)
-brew "tfenv"        # Terraform version manager
-brew "opentofu"     # Infrastructure as Code
+brew "tenv"         # OpenTofu/Terraform version manager
 
 # Kubernetes & Containers
-brew "colima"       # Container runtime (Docker alternative)
-brew "docker"       # Docker CLI
+brew "colima"        # Container runtime (Docker alternative)
 brew "kubernetes-cli" # kubectl
-brew "helm"         # Kubernetes package manager
-brew "eksctl"       # EKS cluster management
-brew "kompose"      # Docker Compose to K8s
-brew "k9s"          # Kubernetes TUI
-brew "act"          # Local GitHub Actions runner
+brew "helm"          # Kubernetes package manager
+brew "eksctl"        # EKS cluster management
+brew "kompose"       # Docker Compose to K8s
+brew "k9s"           # Kubernetes TUI
+brew "act"           # Local GitHub Actions runner
 
 # Security Scanning
 brew "terrascan"    # IaC security scanner
+brew "trivy"        # security scanner
 
 # Languages
 brew "go"           # Go programming language

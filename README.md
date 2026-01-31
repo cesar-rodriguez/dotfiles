@@ -28,14 +28,23 @@ cd ~/GitHub/cesar-rodriguez/dotfiles
 
 3. **Configure secrets and user info**
 
-   ```bash
-   # Git credentials (required for commits)
-   cp ~/GitHub/cesar-rodriguez/dotfiles/git/.gitconfig.local.example ~/.gitconfig.local
-   cursor ~/.gitconfig.local  # Add your name and email
+  ```bash
+  # Git credentials (required for commits)
+  cp ~/GitHub/cesar-rodriguez/dotfiles/git/.gitconfig.local.example ~/.gitconfig.local
+  cursor ~/.gitconfig.local  # Add your name and email
 
-   # Environment secrets (API keys, tokens, etc.)
-   cursor ~/.env.local
+  # Environment secrets (API keys, tokens, etc.)
+  cursor ~/.env.local
+  ```
+
+4. **Generate MCP configs**
+
+   ```bash
+   # Make sure ~/.env.local contains CONTEXT7_API_KEY, GITHUB_TOKEN, STACKGEN_PAT, etc.
+   ./ai/generate-mcp-configs.sh
    ```
+
+   This rewrites the generated MCP configs for Amp, Claude, and Cursor so the HTTP servers (stackgen, Amplitude, etc.) inherit your secrets. Rerun it whenever `.env.local` changes.
 
 ### Is it Safe to Rerun?
 
