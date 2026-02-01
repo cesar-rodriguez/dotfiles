@@ -342,9 +342,8 @@ npx skills add anthropics/skills --skill pdf --skill docx --skill mcp-builder --
 npx skills add vercel-labs/agent-browser --skill agent-browser --global -y
 npx skills add snarktank/amp-skills --skill compound-engineering --global -y
 npx skills add snarktank/ralph --skill prd --skill ralph --global -y
-npx skills add vercel-labs/vercel-composition-patterns --skill vercel-react-best-practices --skill vercel-react-native-skills --skill web-design-guidelines --global -y
+npx skills add vercel-labs/agent-skills --skill composition-patterns --skill react-best-practices --skill react-native-skills --skill web-design-guidelines --global -y
 npx skills add steipete/agent-scripts --skill create-cli --skill brave-search --skill markdown-converter --skill openai-image-gen --skill video-transcript-downloader --global -y
-npx skills add chrisrodz/dotfiles --skill polishing-issues --global -y
 npx skills add hashicorp/agent-skills --skill terraform-style-guide --global -y
 npx skills add antonbabenko/terraform-skill --skill terraform-skill --global -y
 npx skills add --global -y agentmail-to/agentmail-skills@agentmail
