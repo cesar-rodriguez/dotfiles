@@ -12,7 +12,13 @@
     "serena": {
       "type": "command",
       "command": "uvx",
-      "args": ["--from", "serena-mcp", "serena-mcp"],
+      "args": [
+        "--from",
+        "serena-mcp",
+        "serena-mcp",
+        "--open-web-dashboard",
+        "False"
+      ],
       "env": {},
       "tools": ["semantic code search", "find symbols", "LSP", "code navigation"]
     },

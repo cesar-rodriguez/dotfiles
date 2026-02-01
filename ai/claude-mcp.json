@@ -11,7 +11,9 @@
       "args": [
         "--from",
         "serena-mcp",
-        "serena-mcp"
+        "serena-mcp",
+        "--open-web-dashboard",
+        "False"
       ]
     },
     "sequential-thinking": {

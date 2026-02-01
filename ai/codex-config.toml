@@ -8,7 +8,7 @@ args = ["mcp"]
 
 [mcp_servers.serena]
 command = "uvx"
-args = ["--from", "serena-mcp", "serena-mcp"]
+args = ["--from", "serena-mcp", "serena-mcp", "--open-web-dashboard", "False"]
 
 [mcp_servers.sequential-thinking]
 command = "npx"

@@ -40,18 +40,20 @@ backup_if_exists() {
   if [ -f "$1" ] || [ -d "$1" ] || [ -L "$1" ]; then
     mkdir -p "$BACKUP_DIR"
     dest="$BACKUP_DIR/$(basename "$1")"
+
+    if [ -e "$dest" ] && is_same_inode "$1" "$dest"; then
+      print_warning "Skipping backup for $1; already stored at $dest"
+      return
+    fi
+
     set +e
     mv "$1" "$BACKUP_DIR/"
     mv_status=$?
     set -e
 
     if [ "$mv_status" -ne 0 ]; then
-      if [ -e "$dest" ] && is_same_inode "$1" "$dest"; then
-        print_warning "Skipping backup for $1; identical to $dest"
-      else
-        print_error "Failed to back up $1 (mv exit $mv_status)"
-        exit "$mv_status"
-      fi
+      print_error "Failed to back up $1 (mv exit $mv_status)"
+      exit "$mv_status"
     else
       print_warning "Backed up $1 to $BACKUP_DIR"
     fi
@@ -339,6 +341,8 @@ npx skills add steipete/agent-scripts --skill create-cli --skill brave-search --
 npx skills add chrisrodz/dotfiles --skill polishing-issues --global -y
 npx skills add hashicorp/agent-skills --skill terraform-style-guide --global -y
 npx skills add antonbabenko/terraform-skill --skill terraform-skill --global -y
+npx skills add --global -y agentmail-to/agentmail-skills@agentmail
+npx skills add --global -y resend/resend-skills@resend
 print_success "Agent skills installed globally"
 
 # ===== Environment Setup =====

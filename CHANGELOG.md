@@ -4,6 +4,8 @@
 
 - Added `tenv` for Terraform/OpenTofu, switched Docker handling to detect/install Desktop, and ensure agent-browser runtime no longer blocks bootstrap.
 - Documented MCP generation step, added Stackgen/Amplitude servers + `STACKGEN_PAT` env token, and made the generator idempotent with change-only writes.
+- Disabled Serena MCP dashboard auto-opening by passing `--open-web-dashboard False` in every MCP config.
+- Cleaned the bootstrap backup helper to skip already-backed-up files before linking, then added global agentmail/resend skills via the Skills CLI.
 
 ## 2026-01-30
 
