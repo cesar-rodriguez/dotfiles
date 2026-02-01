@@ -65,6 +65,12 @@ create_symlink() {
   local source=$1
   local target=$2
 
+  # Skip if already correctly linked
+  if [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
+    print_success "Already linked $target"
+    return
+  fi
+
   backup_if_exists "$target"
   ln -sf "$source" "$target"
   print_success "Linked $target"
