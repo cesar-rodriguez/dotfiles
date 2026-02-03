@@ -1,14 +1,6 @@
-model = "gpt-5.1-codex-mini"
+model = "gpt-5.2-codex"
 model_reasoning_effort = "medium"
-
-# MCP Servers
-[mcp_servers.graphite]
-command = "gt"
-args = ["mcp"]
-
-[mcp_servers.serena]
-command = "uvx"
-args = ["--from", "serena-mcp", "serena-mcp", "--open-web-dashboard", "False"]
+personality = "pragmatic"
 
 [mcp_servers.sequential-thinking]
 command = "npx"
